@@ -8,3 +8,5 @@ export class RestaurantService {
         return axios.get(dataURL);
     }
 }
+
+export default new RestaurantService();

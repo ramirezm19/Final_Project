@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
 import Marg from './Marg.JPG';
-import {RestaurantService} from "../../../Services/RestaurantService";
+import RestaurantService from "../../../Services/RestaurantService";
 
 
 let HHList = () => {
@@ -13,19 +13,80 @@ let HHList = () => {
         errorMessage: ''
     });
 
-    useEffect( async () => {
-        try {
-            let response = await RestaurantService.getAllRestaurants();
-            console.log(response.data);
-        }
-        catch (error) {
+    // this is the original code from the video and it's giving a useEffect must not return anything besides a function error.
+//     useEffect(async () => {
+//         try {
+//             let response = await RestaurantService.getAllRestaurants();
+//             console.log(response.data);
+//         }
+//         catch (error) {
 
+//         }
+// }, []);
+
+// // this is the suggestion from Dustin Schomburg
+//         useEffect (async () => {
+//             const getResponse = async () => {
+//                 try {
+//                     const apiResponse = await getResponse().then() =>
+//                     console.log(apiResponse);
+//                 }
+//                 catch (error) {
+
+//             }
+// }, []);
+
+//this is the suggestion itself from the error in the console. I get a "response is not defined" error.
+
+    // useEffect (() => {
+    //     async function fetchData() {
+    //         const response = await RestaurantService.getAllRestaurants();
+    //         console.log(response)
+    //     }
+    //         fetchData();
+    //     }, []);
+
+//suggestions from devtrium.com/posts/async-functions-useeffect
+    // useEffect (() => {
+    //     const fetchData = async () = {
+    //         const data = await fetch('http://localhost:9000/restaurants');
+    //         const json = await data.json();
+    //         return json;
+    //     }
+    //     const result = fetchData()
+    //     .catch(console.error);
+    // }, []);
+
+    //suggestion from Natalie -- not getting the data from the API
+    useEffect (() => {
+        const fetchData = async () => {
+            try {
+                setState({...state, loading: true})
+                let response = await RestaurantService.getAllRestaurants();
+                // console.log(response.fetchData)
+                setState({
+                    ...state,
+                    loading: false,
+                    restaurants: response.data
+                });
+            }
+            catch(error) {
+                setState({
+                    ...state,
+                    loading: false,
+                    errorMessage: error.message
+                });
+            }
         }
-    }, []);
+        fetchData();
+    }, [])
+
+    let {loading, restaurants, errorMessage} = state;
 
 
     return (
         <React.Fragment>
+            <pre>{JSON.stringify(restaurants)}</pre>
             <section className='restaurant-search'>
                 <div className='container'>
                     <div className='grid'>
@@ -92,11 +153,11 @@ let HHList = () => {
                                     </ul>
                                 </div>
                                 <div className='col-md-1 d-flex flex-column align-items-center'>
-                                    <Link to={`/Restaurants/view/:restaurantId`} className="btn btn-warning my-1"><image className='fa fa-eye'/>
+                                    <Link to={`/Restaurants/view/:restaurantId`} className="btn btn-warning my-1"><img className='fa fa-eye'/>
                                     </Link>
-                                    <Link to={`/Restaurants/edit/:restaurantId`} className="btn btn-info my-1"><image className='fa fa-pen'/>
+                                    <Link to={`/Restaurants/edit/:restaurantId`} className="btn btn-info my-1"><img className='fa fa-pen'/>
                                     </Link>
-                                    <Button className="btn btn-danger my-1"><image className='fa fa-trash'/>
+                                    <Button className="btn btn-danger my-1"><img className='fa fa-trash'/>
                                     </Button>
                                 </div>
                                 </div>
@@ -135,11 +196,11 @@ let HHList = () => {
                                     </ul>
                                 </div>
                                 <div className='col-md-1 d-flex flex-column align-items-center'>
-                                    <Link to={`/Restaurants/view/:restaurantId`} className="btn btn-warning my-1"><image className='fa fa-eye'/>
+                                    <Link to={`/Restaurants/view/:restaurantId`} className="btn btn-warning my-1"><img className='fa fa-eye'/>
                                     </Link>
-                                    <Link to={`/Restaurants/edit/:restaurantId`} className="btn btn-info my-1"><image className='fa fa-pen'/>
+                                    <Link to={`/Restaurants/edit/:restaurantId`} className="btn btn-info my-1"><img className='fa fa-pen'/>
                                     </Link>
-                                    <Button className="btn btn-danger my-1"><image className='fa fa-trash'/>
+                                    <Button className="btn btn-danger my-1"><img className='fa fa-trash'/>
                                     </Button>
                                 </div>
                                 </div>

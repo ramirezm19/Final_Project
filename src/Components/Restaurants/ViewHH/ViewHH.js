@@ -1,8 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import { Link, useParams } from 'react-router-dom';
+import RestaurantService from '../../../Services/RestaurantService';
 import Marg from '../HHList/Marg.JPG';
 
 let ViewHH = () => {
+
+    let {restaurantId} = useParams();
+
+    let [state, setState] = useState({
+        loading: false,
+        restaurant: {},
+        errorMessage: ''
+    });
+    //my attempt
+    // const testurl = 'http://localhost:9000/restaurants';
+    // const fetchRestaurant = async () => {
+    //     const response = await fetch(testurl)
+    //     const data = await response.json()
+    //     console.log(data)
+    // }
+
+    // useEffect(() => {
+    //     fetchRestaurant()
+    // }, [restaurantId]);
+
+
+    // original code
+    useEffect(async() => {
+        try {
+            let response = await RestaurantService.getContact(restaurantId);
+            console.log(response.data);
+        }   
+        catch (error) {
+
+        }
+    }, [restaurantId]);
+
     return (
         <React.Fragment>
             <section className='view-hh-intro p-3'>

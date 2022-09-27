@@ -7,6 +7,11 @@ export class RestaurantService {
         let dataURL = `${this.serverURL}/restaurants`;
         return axios.get(dataURL);
     }
+
+    static getRestaurant (restaurantId) {
+        let dataURL = `${this.serverURL}/restaurants/${restaurantId}`;
+        return axios.get(dataURL);
+    }
 }
 
 export default new RestaurantService();

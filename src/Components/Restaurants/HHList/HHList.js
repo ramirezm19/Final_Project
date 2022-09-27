@@ -17,7 +17,7 @@ let HHList = () => {
     const fetchRestaurants = async () => {
         const response = await fetch(testurl)
         const data = await response.json()
-        setState(data)
+        setState({ ...state, restaurants: data })
         console.log(data)
     }
 
@@ -109,11 +109,13 @@ let HHList = () => {
     // get();
 
     let { loading, restaurants, errorMessage } = state;
+    console.log(loading);
+    console.log(restaurants);
+    console.log(errorMessage);
 
 
     return (
         <React.Fragment>
-            <pre>{JSON.stringify(restaurants)}</pre>
             <section className='restaurant-search'>
                 <div className='container'>
                     <div className='grid'>
@@ -152,47 +154,55 @@ let HHList = () => {
                 loading ? <Spinner /> : <React.Fragment>
                     <section className='restaurant-list'>
                         <div className='container'>
-                            <div className='cold-md-6'>
-                                <div className='card'>
-                                    <div className='card-body'>
-                                        <div className='row align-items-center d-flex justify-content-around'>
-                                            <div className='col-md-4'>
-                                                <img src={Marg} className='restaurant-img'></img>
-                                            </div>
-                                            <div className='col-md-7'>
-                                                <ul className='list-group'>
-                                                    <li className='list-group-item list-group-item-action'>
-                                                        Name: <span className='fw-bold'>La Doña Mezcaleria</span>
-                                                    </li>
-                                                    <li className='list-group-item list-group-item-action'>
-                                                        Address: <span className='fw-bold'>13 E. Louisiana Ave., <br></br> Denver, CO 80210</span>
-                                                    </li>
-                                                    <li className='list-group-item list-group-item-action'>
-                                                        Happy Hour Days: <span className='fw-bold'>XXXXX</span>
-                                                    </li>
-                                                    <li className='list-group-item list-group-item-action'>
-                                                        Happy Hour Times: <span className='fw-bold'>XXXXX</span>
-                                                    </li>
-                                                    <li className='list-group-item list-group-item-action'>
-                                                        Menu: <span className='fw-bold'>XXXXX</span>
-                                                    </li>
-                                                    <li className='list-group-item list-group-item-action'>
-                                                        Update Date: <span className='fw-bold'>Here is where I want to include the Star Rating and Comments</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div className='col-md-1 d-flex flex-column align-items-center'>
-                                                <Link to={`/Restaurants/view/:restaurantId`} className="btn btn-warning my-1"><img className='fa fa-eye' />
-                                                </Link>
-                                                <Link to={`/Restaurants/edit/:restaurantId`} className="btn btn-info my-1"><img className='fa fa-pen' />
-                                                </Link>
-                                                <Button className="btn btn-danger my-1"><img className='fa fa-trash' />
-                                                </Button>
+                            {
+                                restaurants.length > 0 &&
+                                restaurants.map(restaurant => {
+                                    return (
+                                        <div className='cold-md-6' key={restaurant.id}>
+                                            <div className='card my-4'>
+                                                <div className='card-body'>
+                                                    <div className='row align-items-center d-flex justify-content-around'>
+                                                        <div className='col-md-4'>
+                                                            <img src={Marg} className='restaurant-img'></img>
+                                                        </div>
+                                                        <div className='col-md-7'>
+                                                            <ul className='list-group'>
+                                                                <li className='list-group-item list-group-item-action'>
+                                                                    Name: <span className='fw-bold'>{restaurant.name}</span>
+                                                                </li>
+                                                                <li className='list-group-item list-group-item-action'>
+                                                                    Address: <span className='fw-bold'>{restaurant.address}</span>
+                                                                </li>
+                                                                <li className='list-group-item list-group-item-action'>
+                                                                    Happy Hour Days: <span className='fw-bold'>XXXXX</span>
+                                                                </li>
+                                                                <li className='list-group-item list-group-item-action'>
+                                                                    Happy Hour Times: <span className='fw-bold'>{restaurant.hhtimes}</span>
+                                                                </li>
+                                                                <li className='list-group-item list-group-item-action'>
+                                                                    Menu: <span className='fw-bold'>{restaurant.menu}</span>
+                                                                </li>
+                                                                <li className='list-group-item list-group-item-action'>
+                                                                    Update Date: <span className='fw-bold'>Here is where I want to include the Star Rating and Comments</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div className='col-md-1 d-flex flex-column align-items-center'>
+                                                            <Link to={`/Restaurants/view/${restaurant.id}`} className="btn btn-warning my-1"><img className='fa fa-eye' />
+                                                            </Link>
+                                                            <Link to={`/Restaurants/edit/:restaurantId`} className="btn btn-info my-1"><img className='fa fa-pen' />
+                                                            </Link>
+                                                            <Button className="btn btn-danger my-1"><img className='fa fa-trash' />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    )
+                                })
+                            }
+
                         </div>
                         <div className='container mt-4'>
                         </div>

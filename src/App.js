@@ -7,7 +7,6 @@ import HHList from "./Components/Restaurants/HHList/HHList";
 import AddHH from "./Components/Restaurants/AddHH/AddHH";
 import ViewHH from "./Components/Restaurants/ViewHH/ViewHH";
 import EditHH from "./Components/Restaurants/EditHH/EditHH";
-import Spinner from "./Components/Spinner/spinner";
 
 let App = () => {
   return (

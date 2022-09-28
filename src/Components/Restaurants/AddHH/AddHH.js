@@ -1,12 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import RestaurantService from '../../../Services/RestaurantService';
 
 let AddHH = () => {
+
+    let navigate = useNavigate();
+
+    let [state , setState] = useState({
+        loading: false,
+        restaurant: {
+            name: '',
+            address: '',
+            hhtimes: '',
+            menu: ''
+        },
+        errorMessage: ''
+    });
+
+    let updateInput = (event) => {
+        setState({
+            ...state,
+            contact: {
+                ...state.restaurant,
+                [event.target.name] : event.target.value
+            }
+        });
+    };
+
+    let submitForm = async (event) => {
+        event.preventDefault();
+        try {
+            let response = await RestaurantService.createRestaurant(state.restaurant);
+            if(response){
+                navigate('/Restaurants/HHList', {replace: true} );
+            }
+        }
+        catch (error) {
+            setState( {...state, errorMessage: error.message});
+            navigate('/Restaurants/add', {replace: false} );
+        }
+    };
+
+    let {loading, restaurant, errorMessage} = state;
+
     return (
         <React.Fragment>
+            <pre>{JSON.stringify(state.restaurant)}</pre>
             <section className='add-hh p-3'>
                 <div className='container-fluid'>
                     <div className='row'>
@@ -17,14 +59,21 @@ let AddHH = () => {
                     </div>
                     <div className='row'>
                         <div className='col-md-6'>
-                            <Form>
+                            <Form onSubmit={submitForm}>
                                 <Form.Group className="mb-3" controlId="restaurantName">
-                                    {/* <Form.Label>Name of Restaurant</Form.Label> */}
-                                    <Form.Control type="text" placeholder="Enter Restaurant Name" />
+                                    <Form.Control type="text" placeholder="Enter Restaurant Name"   
+                                    required={true} 
+                                    name="name" 
+                                    value={restaurant.name} 
+                                    onChange={updateInput}/>
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="restaurantAddress">
-                                     <Form.Control type="text" placeholder="Enter Address" />
+                                     <Form.Control type="text" placeholder="Enter Address" 
+                                    required={true} 
+                                    name="address" 
+                                    value={restaurant.address} 
+                                    onChange={updateInput}/>
                                      <Form.Text className="text-muted">
                                         Example: 123 E. Some Way, Little Town, XX 12345
                                     </Form.Text>
@@ -89,15 +138,22 @@ let AddHH = () => {
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="restaurantTimes">
-                                     <Form.Control type="text" placeholder="Enter Happy Hour Times" />
+                                     <Form.Control type="text" placeholder="Enter Happy Hour Times"
+                                    required={true} 
+                                    name="hhtimes" 
+                                    value={restaurant.hhtimes} 
+                                    onChange={updateInput} />
                                      <Form.Text className="text-muted">
                                         Example: 2pm-6pm
                                     </Form.Text>
                                 </Form.Group>
 
                                 <InputGroup controlId="restaurantMenu">
-                                    {/* <InputGroup.Text>With textarea</InputGroup.Text> */}
-                                    <Form.Control as="textarea" placeholder="Enter Happy Hour Menu" aria-label="With textarea" />
+                                    <Form.Control as="textarea" placeholder="Enter Happy Hour Menu" aria-label="With textarea" 
+                                    required={true} 
+                                    name="menu" 
+                                    value={restaurant.menu} 
+                                    onChange={updateInput}/>
                                 </InputGroup>
 
                                 <Button className='submitHH mt-3' variant="warning" type="submit">Submit</Button>

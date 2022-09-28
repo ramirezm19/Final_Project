@@ -8,9 +8,16 @@ import Spinner from '../../Spinner/spinner';
 
 let HHList = () => {
 
+    //for the search bar
+    let [query, setQuery] = useState({
+        text: '',
+
+    });
+
     let [state, setState] = useState({
         loading: false,
         restaurants: [],
+        // filteredRestaurants: [],
         errorMessage: ''
     });
     const testurl = 'http://localhost:9000/restaurants';
@@ -21,92 +28,46 @@ let HHList = () => {
         console.log(data)
     }
 
+    //how to add filtered restaurants to the above state
+
     useEffect(() => {
         fetchRestaurants()
     }, []);
 
-    // this is the original code from the video and it's giving a useEffect must not return anything besides a function error.
-    //     useEffect(async () => {
-    //         try {
-    //             let response = await RestaurantService.getAllRestaurants();
-    //             console.log(response.data);
-    //         }
-    //         catch (error) {
+    let clickDelete = async (restaurantId) => {
+        try {
+            let response = await RestaurantService.deleteRestaurant(restaurantId);
+            if (response) {
+                setState ({...state, loading: true});
+                let response = await RestaurantService.getAllRestaurants();
+                setState({
+                    ...state,
+                    loading: false,
+                    restaurants: response.data,
+                    filteredRestaurants: response.data
+                });
+            }
+        }
+        catch (error) {
+            setState({
+                ...state,
+                loading: false,
+                errorMessage: error.message
+            });
+        }
+    }
 
-    //         }
-    // }, []);
-
-    // // this is the suggestion from Dustin Schomburg
-    //         useEffect (async () => {
-    //             const getResponse = async () => {
-    //                 try {
-    //                     const apiResponse = await getResponse().then() =>
-    //                     console.log(apiResponse);
-    //                 }
-    //                 catch (error) {
-
-    //             }
-    // }, []);
-
-    //this is the suggestion itself from the error in the console. I get a "response is not defined" error.
-
-    // useEffect (() => {
-    //     async function fetchData() {
-    //         const response = await RestaurantService.getAllRestaurants();
-    //         console.log(response)
-    //     }
-    //         fetchData();
-    //     }, []);
-
-    //suggestions from devtrium.com/posts/async-functions-useeffect
-    // useEffect (() => {
-    //     const fetchData = async () = {
-    //         const data = await fetch('http://localhost:9000/restaurants');
-    //         const json = await data.json();
-    //         return json;
-    //     }
-    //     const result = fetchData()
-    //     .catch(console.error);
-    // }, []);
-
-    //suggestion from Natalie -- not getting the data from the API
-    // useEffect (() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             let response = await RestaurantService.getAllRestaurants();
-    //             setState({
-    //                 ...state,
-    //                 loading: false,
-    //                 restaurants: response.data
-    //             });
-    //         }
-    //         catch(error) {
-    //             setState({
-    //                 ...state,
-    //                 loading: false,
-    //                 errorMessage: error.message
-    //             });
-    //         }
-    //     }
-    //     fetchData();
-    // }, [])
-
-    //let's try what I've done in the past
-    // const url = 'http://localhost:9000/restaurants';
-
-    // const get = async () => {
-    //     try {
-    //         const response = await fetch(url);
-    //         const data = await response.json();
-    //         return data;
-    //         console.log(data)
-    //     }
-    //     catch (error) {
-    //         console.log
-    //     }
-    // }
-
-    // get();
+    //search Restaurants
+    let searchRestaurants = (event) => {
+        setQuery({...query, text: event.target.value});
+        let theRestaurants = state.restaurants.filter(restaurant => {
+            return restaurant.name.toLowerCase().includes(event.target.value.toLowerCase())
+        });
+        setState({
+            ...state,
+            filteredRestaurants: theRestaurants
+        });
+    };
 
     let { loading, restaurants, errorMessage } = state;
     console.log(loading);
@@ -134,7 +95,11 @@ let HHList = () => {
                                 <form className='row'>
                                     <div className='col'>
                                         <div className='mb-2'>
-                                            <input type='text' className='form-control' placeholder='Search Restaurants' />
+                                            <input 
+                                            name ='text'
+                                            value = {query.text}
+                                            onChange={searchRestaurants}
+                                            type='text' className='form-control' placeholder='Search Restaurants' />
                                         </div>
                                     </div>
                                     <div className='col'>
@@ -188,11 +153,11 @@ let HHList = () => {
                                                             </ul>
                                                         </div>
                                                         <div className='col-md-1 d-flex flex-column align-items-center'>
-                                                            <Link to={`/Restaurants/view/${restaurant.id}`} className="btn btn-warning my-1"><img className='fa fa-eye' />
+                                                            <Link to={`/Restaurants/view/${restaurant.id}`} className="btn btn-warning my-1"><i class='fa-solid fa-eye' />
                                                             </Link>
-                                                            <Link to={`/Restaurants/edit/:restaurantId`} className="btn btn-info my-1"><img className='fa fa-pen' />
+                                                            <Link to={`/Restaurants/edit/${restaurant.id}`} className="btn btn-info my-1"><i class='fa-solid fa-pen-clip' />
                                                             </Link>
-                                                            <Button className="btn btn-danger my-1"><img className='fa fa-trash' />
+                                                            <Button className="btn btn-danger my-1" onClick={() => clickDelete(restaurant.id)}><i class='fa-solid fa-trash-can' />
                                                             </Button>
                                                         </div>
                                                     </div>

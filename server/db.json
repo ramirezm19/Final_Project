@@ -1,46 +1,39 @@
 {
-    "restaurants": [
-        {
-            "id": "1",
-            "name": "La Doña Mezcaleria",
-            "address": "13 E. Louisiana Ave., Denver, CO 80210",
-            "hhtimes": "2pm-7pm",
-            "menu": "$1 off all mezcal pours, $5 La Doña draft, $10 Mezcalrita, $9 House Marg, $1.50 Chips and Salsa, $11 Mix and Match cerveza and shot",
-            "hhdaymonday": true,
-            "hhdaytuesday": true,
-            "hhdaywednesday": true,
-            "hhdaythursday": true,
-            "hhdayfriday": true,
-            "hhdaysaturday": false,
-            "hhdaysunday": false         
-        },
-        {
-            "id": "2",
-            "name": "Rocky Top Tavern",
-            "address": "4907 Lowell Blvd., Denver, CO 80221",
-            "hhtimes": "2pm-6pm",
-            "menu": "$4.00 wells, $15 for 20 wings",
-            "hhdaymonday": false,
-            "hhdaytuesday": true,
-            "hhdaywednesday": true,
-            "hhdaythursday": true,
-            "hhdayfriday": true,
-            "hhdaysaturday": false,
-            "hhdaysunday": false
-        },
-        {
-            "id": "3",
-            "name": "Gaetano's",
-            "address": "3760 Tejon St., Denver, CO 80211",
-            "hhtimes": "3pm-5pm",
-            "menu": "$5.00 well drinks, $.99 oysters, $5.00 Happy Hour Wine, $2.00 off select drafts",
-            "hhdaymonday": false,
-            "hhdaytuesday": false,
-            "hhdaywednesday": false,
-            "hhdaythursday": true,
-            "hhdayfriday": true,
-            "hhdaysaturday": true,
-            "hhdaysunday": true
-        }
-    ]
+  "restaurants": [
+    {
+      "id": "1",
+      "name": "La Doña Mezcaleria",
+      "address": "13 E. Louisiana Ave., Denver, CO 80210",
+      "hhtimes": "2pm-7pm",
+      "menu": "$1 off all mezcal pours, $5 La Doña draft, $10 Mezcalrita, $9 House Marg, $1.50 Chips and Salsa, $11 Mix and Match cerveza and shot",
+      "hhdaymonday": true,
+      "hhdaytuesday": true,
+      "hhdaywednesday": true,
+      "hhdaythursday": true,
+      "hhdayfriday": true,
+      "hhdaysaturday": false,
+      "hhdaysunday": false
+    },
+    {
+      "id": "2",
+      "name": "Rocky Top Tavern",
+      "address": "4907 Lowell Blvd., Denver, CO 80221",
+      "hhtimes": "2pm-6pm",
+      "menu": "$4.00 wells, $15 for 20 wings",
+      "hhdaymonday": false,
+      "hhdaytuesday": true,
+      "hhdaywednesday": true,
+      "hhdaythursday": true,
+      "hhdayfriday": true,
+      "hhdaysaturday": false,
+      "hhdaysunday": false
+    },
+    {
+      "name": "Mojo's",
+      "address": "123 Somewhere Blvd.",
+      "hhtimes": "2-5pm",
+      "menu": "some stuff",
+      "id": "OYj42Rq"
+    }
+  ]
 }

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import RestaurantService from '../../../Services/RestaurantService';
 import Marg from '../HHList/Marg.JPG';
 import Spinner from '../../Spinner/spinner';
+import axios from 'axios';
 
 let ViewHH = () => {
 
@@ -14,44 +15,47 @@ let ViewHH = () => {
         errorMessage: ''
     });
 
-    //from the video --which we know it doesn't work
-    //useEffect(async () => {
-    //     try {
-    //setState({...state, loading: true});
-    //let response = await RestaurantService.getRestaurant(restaurantId);
-    //console.log(response.data); -- need to have it print out the data for the individual restaurant
-    //setState({
-    //...state,
-    //loading: false;
-    //restaurant: response.data
-    //})
-    //     }
-    //     catch (error)
-    //setState({
-    //...state,
-    //loading: false,
-    //errorMessage: error.message
-    //});
-    // }
-    //}, [restaurantId]);
+    const serverURL = `http://localhost:9000`;
+    const fetchRestaurant = async () => {
+        let dataURL = `${serverURL}/restaurants/${restaurantId}`;
+        return axios.get(dataURL);
+    }
+    
+
+    useEffect(() => {
+        console.log('hey')
+        setState({ ...state, loading: true });
+        let response = fetchRestaurant().then(response => {
+            console.log(response.data)
+            setState({
+                ...state,
+                loading: false,
+                restaurant: response.data
+            })
+        }).catch(response => {
+            
+        });
+        console.log(response);
+        
+    }, []);
 
     //let {loading, restaurant, errorMessage } = state;
 
     //suggestion from Ben
 
-    const testurl = 'http://localhost:9000/restaurants';
-    const fetchRestaurant = async () => {
-        const response = await fetch(testurl)
-        const data = await response.json()
-        setState({ ...state, restaurants: data })
-        console.log(data);
-    }
+    // const testurl = 'http://localhost:9000/restaurants';
+    // const fetchRestaurant = async () => {
+    //     const response = await fetch(testurl)
+    //     const data = await response.json()
+    //     setState({ ...state, restaurants: data })
+    //     console.log(data);
+    // }
 
-    useEffect((restaurantId) => {
-        fetchRestaurant();
-    }, [restaurantId])
+    // useEffect((restaurantId) => {
+    //     fetchRestaurant();
+    // }, [restaurantId])
 
-    let {loading, restaurant, errorMessage } = state;
+    let { loading, restaurant, errorMessage } = state;
 
     return (
         <React.Fragment>
@@ -69,7 +73,7 @@ let ViewHH = () => {
             {
                 loading ? <Spinner /> : <React.Fragment>
                     {
-                        Object.keys(restaurant).length > 0 &&
+                        (restaurant) &&
                         <section className='view-hh mt-3'>
                             <div className='container'>
                                 <div className='row align-items-center'>

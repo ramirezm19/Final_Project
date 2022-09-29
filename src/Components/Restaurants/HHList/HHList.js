@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import Marg from './Marg.JPG';
 import RestaurantService from "../../../Services/RestaurantService";
 import Spinner from '../../Spinner/spinner';
+import axios from 'axios';
 
 
 let HHList = () => {
@@ -35,26 +36,31 @@ let HHList = () => {
     }, []);
 
     let clickDelete = async (restaurantId) => {
-        try {
-            let response = await RestaurantService.deleteRestaurant(restaurantId);
+        let dataURL = `${testurl}/${restaurantId}`;
+        axios.delete(dataURL).then(async (response) => {
             if (response) {
                 setState ({...state, loading: true});
-                let response = await RestaurantService.getAllRestaurants();
+                const response = await fetch(testurl)
+                const data = await response.json()
                 setState({
                     ...state,
                     loading: false,
-                    restaurants: response.data,
-                    filteredRestaurants: response.data
+                    restaurants: data,
+                    filteredRestaurants: data
                 });
             }
-        }
-        catch (error) {
-            setState({
-                ...state,
-                loading: false,
-                errorMessage: error.message
-            });
-        }
+        });
+        // try {
+        //     let response = await RestaurantService.deleteRestaurant(restaurantId);
+            
+        // }
+        // catch (error) {
+        //     setState({
+        //         ...state,
+        //         loading: false,
+        //         errorMessage: error.message
+        //     });
+        // }
     }
 
     //search Restaurants

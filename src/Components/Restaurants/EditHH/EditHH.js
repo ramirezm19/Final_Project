@@ -6,6 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import RestaurantService from '../../../Services/RestaurantService';
 import Marg from '../HHList/Marg.JPG';
+import axios from 'axios';
 
 let EditHH = () => {
 
@@ -24,24 +25,28 @@ let EditHH = () => {
         errorMessage: ''
     });
 
-    useEffect(async () => {
-        try {
-            setState({ ...state, loading: true });
-            let response = await RestaurantService.getRestaurant(restaurantId);
+    const serverURL = `http://localhost:9000`;
+    const fetchRestaurant = async () => {
+        let dataURL = `${serverURL}/restaurants/${restaurantId}`;
+        return axios.get(dataURL);
+    }
+
+    useEffect(() => {
+        console.log('hey')
+        setState({ ...state, loading: true });
+        let response = fetchRestaurant().then(response => {
+            console.log(response.data)
             setState({
                 ...state,
                 loading: false,
-                contact: response.data
-            });
-        }
-        catch (error) {
-            setState({
-                ...state,
-                loading: false,
-                errorMessage: error.message
+                restaurant: response.data
             })
-        }
-    }, [restaurantId]);
+        }).catch(response => {
+            
+        });
+        console.log(response);
+        
+    }, []);
 
     let updateInput = (event) => {
         setState({
@@ -53,18 +58,21 @@ let EditHH = () => {
         })
     };
 
-    let submitForm = async (event) => {
+    let submitForm = (event) => {
+        console.log('hey')
         event.preventDefault();
-        try {
-            let response = await RestaurantService.updateRestaurant(state.restaurant, restaurantId);
-            if (response) {
-                navigate('/Restaurants/HHList', { replace: true });
-            }
-        }
-        catch (error) {
-            setState({ ...state, errorMessage: error.message });
+            // static updateRestaurant(restaurant, restaurantId) {
+                let dataURL = `${serverURL}/restaurants/${restaurantId}`;
+            // }
+            axios.put(dataURL, restaurant).then(response => {
+                if (response) {
+                    navigate('/Restaurants/HHList', { replace: true });
+                }
+            }).catch(error => {
+                setState({ ...state, errorMessage: error.message });
             navigate(`/Restaurants/edit/${restaurantId}`, { replace: false });
-        }
+            console.log(error)
+        });
     };
 
     let { loading, restaurant, errorMessage } = state;
@@ -182,7 +190,7 @@ let EditHH = () => {
                                                 onChange={updateInput} />
                                         </InputGroup>
 
-                                        <Button className='submitHH mt-3' variant="warning" type="submit">Update</Button>
+                                        <Button className='submitHH mt-3' variant="warning" type="submit" onClick={submitForm}>Update</Button>
 
                                         <Link to={'/Restaurants/HHList'} className="btn btn-dark ms-2 mt-3">Cancel</Link>
 

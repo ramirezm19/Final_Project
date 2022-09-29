@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Link, useNavigate } from 'react-router-dom';
 import RestaurantService from '../../../Services/RestaurantService';
+import axios from 'axios';
 
 let AddHH = () => {
 
@@ -19,29 +20,35 @@ let AddHH = () => {
         },
         errorMessage: ''
     });
+    const serverURL = `http://localhost:9000`;
 
     let updateInput = (event) => {
+        console.log('tahdah')
+        console.log(state);
         setState({
             ...state,
-            contact: {
+            restaurant: {
                 ...state.restaurant,
                 [event.target.name] : event.target.value
             }
         });
     };
 
-    let submitForm = async (event) => {
+    let submitForm = (event) => {
+        console.log('hey')
         event.preventDefault();
-        try {
-            let response = await RestaurantService.createRestaurant(state.restaurant);
-            if(response){
-                navigate('/Restaurants/HHList', {replace: true} );
-            }
-        }
-        catch (error) {
-            setState( {...state, errorMessage: error.message});
-            navigate('/Restaurants/add', {replace: false} );
-        }
+            // static updateRestaurant(restaurant, restaurantId) {
+                let dataURL = `${serverURL}/restaurants`;
+            // }
+            axios.post(dataURL, restaurant).then(response => {
+                if (response) {
+                    navigate('/Restaurants/HHList', { replace: true });
+                }
+            }).catch(error => {
+                setState({ ...state, errorMessage: error.message });
+            navigate(`/Restaurants/add`, { replace: false });
+            console.log(error)
+        });
     };
 
     let {loading, restaurant, errorMessage} = state;
@@ -156,7 +163,7 @@ let AddHH = () => {
                                     onChange={updateInput}/>
                                 </InputGroup>
 
-                                <Button className='submitHH mt-3' variant="warning" type="submit">Submit</Button>
+                                <Button className='submitHH mt-3' variant="warning" type="submit" onClick={submitForm}>Submit</Button>
 
                                 <Link to={'/Restaurants/HHList'} className="btn btn-dark ms-2 mt-3">Cancel</Link>
 

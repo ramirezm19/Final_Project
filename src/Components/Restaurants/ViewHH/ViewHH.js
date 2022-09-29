@@ -63,8 +63,8 @@ let ViewHH = () => {
                 <div className='container'>
                     <div className='row'>
                         <div className='col'>
-                            <p className='h3'><span className='update'>View</span> Happy Hour</p>
-                            <p className='fst-italic'>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah</p>
+                            <p className='h3 text-center mt-4'><span className='update'>View</span> Happy Hour</p>
+                            <p className='fst-italic text-center mt-4'>Restaurant Happy Hour details.</p>
                         </div>
                     </div>
                 </div>

@@ -81,16 +81,15 @@ let EditHH = () => {
         <React.Fragment>
             {
                 loading ? <Spinner /> : <React.Fragment>
-                    <pre>{JSON.stringify(restaurant)}</pre>
                     <section className='add-hh p-3'>
-                        <div className='container-fluid'>
+                        <div className='container align-items-center'>
                             <div className='row align-items-center'>
                                 <div className='col'>
-                                    <p className='h3'><span className='update'>Update</span> Happy Hour</p>
-                                    <p className='fst-italic'>lorem lorem lorem lorem ipsum ipsum tah dah dah dah</p>
+                                    <p className='h3 text-center mt-4'><span className='update'>Update</span> Happy Hour</p>
+                                    <p className='fst-italic text-center mt-4'>Provide the following details to update the Happy Hour at this restaurant.</p>
                                 </div>
                             </div>
-                            <div className='row'>
+                            <div className='row mt-5'>
                                 <div className='col-md-6'>
                                     <Form onSubmit={submitForm}>
                                         <Form.Group className="mb-3" controlId="restaurantName">

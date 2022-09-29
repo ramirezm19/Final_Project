@@ -55,13 +55,12 @@ let AddHH = () => {
 
     return (
         <React.Fragment>
-            <pre>{JSON.stringify(state.restaurant)}</pre>
             <section className='add-hh p-3'>
-                <div className='container-fluid'>
+                <div className='container'>
                     <div className='row'>
                         <div className='col'>
-                        <p className='h3'><span className='update'>Add</span> Happy Hour</p>
-                            <p className='fst-italic'>lorem lorem lorem lorem ipsum ipsum tah dah dah dah</p>
+                        <p className='h3 text-center mt-4'><span className='update'>Add</span> Happy Hour</p>
+                            <p className='fst-italic text-center mt-4'>Please provide the following information to submit a new Happy Hour.</p>
                         </div>
                     </div>
                     <div className='row'>

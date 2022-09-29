@@ -87,13 +87,19 @@ let HHList = () => {
                 <div className='container'>
                     <div className='grid'>
                         <div className='row'>
-                            <div className='col'>
-                                <p className='h3'>Happy Hour List
-                                    <Link to={'/Restaurants/add'}>
+                            <div className='col text-center'>
+                                <p className='h3 text-center mt-4'>Happy Hour List </p>
+                                    {/* <Link to={'/Restaurants/add'}>
+                                        <Button variant='warning m-3'> <i className='fa fa-plus-circle'></i> New Happy Hour</Button>
+                                    </Link> */}
+                                
+                                <p className="fst-italic text-center mt-4">This is the list of Happy Hours available in your area.</p>
+                                
+                                <Link to={'/Restaurants/add'}>
                                         <Button variant='warning m-3'> <i className='fa fa-plus-circle'></i> New Happy Hour</Button>
                                     </Link>
-                                </p>
-                                <p className="fst-italic">Some Lorem is supposed to go in here but for whatever reason it won't do it for me right now but I will put something in here to include information about the search and the list of restaurants.</p>
+
+                                <p className="fst-italic text-center mt-4">Use this button to add a new Happy Hour to the list.</p>
                             </div>
                         </div>
                         <div className='row'>
